@@ -136,15 +136,16 @@
 
 	<script>
 		/* if script is lengthy, implementation in a .js file is preferred */
+
+		/* This function generates a new verification code each time the page is loaded */
 		function generateVerificationCode() {
 			var min = 10000;  /* minimum should be 5 digits */
 			var max = 99999;  /* maximum should be 5 digits */
-			var newCode = (Math.random() * (max - min + 1));    /* Generates a random number */
-			var newCodeFull = Math.floor(newCode) + min;		/* minimum 5 digits expected */
-
+			var newCodeFull = Math.floor((Math.random() * (max - min + 1))) + min;		/* minimum 5 digits expected */
 			document.getElementById('spanCode').innerHTML = newCodeFull;
 		}
 
+		/* This function validates all the fields*/
 		function validateFields() {
 			/* variable declaration */
 			var name = document.getElementById('name').value;
