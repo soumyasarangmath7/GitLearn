@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--Tag to state html5 is enabled-->
+<html lang="en">
+
+<head>
+	<title>Contact Page - Bootstrap</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container shadow bg-white rounded">
+		<h2 class="display-4 ml-5">Contact Us</h2>
+		<form method="post" onsubmit="return validateFields()" action="contactPage.php">
+			<!---------------------------------- Name and phone---------------------------------->
+			<div class="row m-4 mt-5">
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group shadow bg-white rounded p-2">
+							<span class="input-group-text rounded-circle">
+								<i class="fa fa-user text-success"></i>
+							</span>
+							<input type="text" class="form-control border-0" placeholder="Your Name*" id="name"
+								name="name">
+						</div>
+						<span class="text-danger" id="errName"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group shadow bg-white rounded p-2">
+							<span class="input-group-text rounded-circle">
+								<i class="fa fa-volume-control-phone text-success"></i>
+							</span>
+							<input type="text" class="form-control border-0" name="phone" id="phone"
+								placeholder="Phone*">
+						</div>
+						<span class="text-danger" id="errPhone"></span>
+					</div>
+				</div>
+			</div>
+			<!---------------------------------- Mail and Category---------------------------------->
+			<div class="row m-4">
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group shadow bg-white rounded p-2">
+							<span class="input-group-text rounded-circle">
+								<i class="fa fa-envelope text-success"></i>
+							</span>
+							<input type="email" class="form-control border-0" id="email" name="email"
+								placeholder="Your Email*">
+						</div>
+						<span class="text-danger" id="errEmail"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group shadow bg-white rounded p-2">
+							<span class="input-group-text rounded-circle">
+								<i class="fa fa-bookmark text-success"></i>
+							</span>
+							<select name="category" id="category" class="browser-default custom-select border-0">
+								<option value="" selected disabled>Category*</option>
+								<option value="Option-1">Option-1</option>
+								<option value="Option-2">Option-2</option>
+								<option value="Option-3">Option-3</option>
+							</select>
+						</div>
+						<span class="text-danger" id="errCategory"></span>
+					</div>
+				</div>
+			</div>
+			<!---------------------------------- Msg ---------------------------------->
+			<div class="row m-4">
+				<div class="col">
+					<div class="form-group">
+						<div class="input-group shadow bg-white p-2">
+							<span class="input-group-text ">
+								<i class="fa fa-envelope-open text-success"></i>
+							</span>
+							<textarea name="message" class="form-control border-0" placeholder="Your Message"
+								rows="3"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!---------------------------------- Code ---------------------------------->
+			<div class="row m-4">
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group shadow bg-white rounded p-2">
+							<span id="spanCode" class="input-group-text bg-success text-white ">
+
+							</span>
+							<input type="text" name="code" class="form-control border-0" id="code"
+								placeholder="Please enter code*">
+						</div>
+						<span class="text-danger" id="errCode"></span>
+					</div>
+				</div>
+			</div>
+			<!---------------------------------- T&C ---------------------------------->
+			<div class="row m-4">
+				<div class="col-md-6">
+					<div class="form-group">
+						<div class="input-group p-1 ">
+							<div class="custom-control custom-radio ">
+								<input type="radio" class="custom-control-input" id="customRadio" name="t&C">
+								<label class="custom-control-label" for="customRadio">
+									I accepted
+									<span class="text-success">Terms & Conditions*</span>
+								</label>
+							</div>
+						</div>
+						<span class="text-danger" id="errAccept"></span>
+					</div>
+				</div>
+			</div>
+			<!---------------------------------- Submit ---------------------------------->
+			<div class="row m-4">
+				<div class="col">
+					<div class="form-group">
+						<div class="input-group bg-white rounded p-2" id="statusDiv">
+							<button type="submit" class="btn btn-success">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		/* if script is lengthy, implementation in a .js file is preferred */
+		function generateVerificationCode() {
+			var min = 10000;  /* minimum should be 5 digits */
+			var max = 99999;  /* maximum should be 5 digits */
+			var newCode = (Math.random() * (max - min + 1));    /* Generates a random number */
+			var newCodeFull = Math.floor(newCode) + min;		/* minimum 5 digits expected */
+
+			document.getElementById('spanCode').innerHTML = newCodeFull;
+		}
+
+		function validateFields() {
+			/* variable declaration */
+			var name = document.getElementById('name').value;
+			var phone = document.getElementById('phone').value;
+			var email = document.getElementById('email').value;
+			var category = document.getElementById('category').value;
+			var code = document.getElementById('code').value;
+			var acceptChecked = document.getElementById('customRadio').checked;			
+			var isAllValid = true;
+
+			//To Validate Name 
+			if (name == "") {
+				document.getElementById('errName').innerHTML = "<i>!</i> Please enter your name";
+				isAllValid = false;
+			}
+			else {
+				document.getElementById('errName').style.display = "none";
+			}
+
+
+			//To VALIDATE PHONE
+			if (phone == "") {
+				document.getElementById('errPhone').innerHTML = "<i>!</i> Please enter your phone number";
+				isAllValid = false;
+			}
+			else if (phone.length != 10) {
+				document.getElementById('errPhone').innerHTML = "<i>!</i> Please enter 10digit phone number";
+				isAllValid = false;
+			}
+			else if (isNaN(phone) == true) {
+				document.getElementById('errPhone').innerHTML = "<i>!</i> Please enter numbers only";
+				isAllValid = false;
+			}
+			else if (phone != "") {
+				document.getElementById('errPhone').innerHTML = "";
+			}
+
+			//To Validate Email 
+			if (email == "") {
+				document.getElementById('errEmail').innerHTML = "<i>!</i> Please enter the email";
+				isAllValid = false;
+			}
+			else if (email != "") {
+				document.getElementById('errEmail').innerHTML = "";
+			}
+
+			//To Validate Category
+			if (category == "") {
+				document.getElementById('errCategory').innerHTML = "<i>!</i> Please select the category"
+				isAllValid = false;
+			}
+			else if (category != "") {
+				document.getElementById('errCategory').innerHTML = "";
+			}
+
+			//To Validate Code
+			if (code == "") {
+				document.getElementById('errCode').innerHTML = "<i>!</i> Please enter the code";
+				isAllValid = false;
+			}
+			else if (isNaN(code) == true) {
+				document.getElementById('errCode').innerHTML = "<i>!</i> Please enter the valid numbers";
+				isAllValid = false;
+			}
+			else if (code != "") {
+				if (code == document.getElementById('spanCode').innerHTML) {
+					document.getElementById('errCode').innerHTML = "";
+				}
+				else {
+					document.getElementById('errCode').innerHTML = "<i>!</i> Please enter the valid code";
+					isAllValid = false;
+				}
+			}
+
+			//To Validate acceptRadio 
+			if (acceptChecked == true) {				
+				document.getElementById('errAccept').innerHTML = "";
+			}
+			else {
+				document.getElementById('errAccept').innerHTML = "<i>!</i> You must agree before submitting";
+				isAllValid = false;
+			}
+
+			if (isAllValid == true) {
+				/* do nothing since on success navigate to the new page */
+			}
+			else {
+				if (document.getElementById('result') == null) {
+					$(function () {
+						$("#statusDiv").after('<p id="result" class="text-danger ml-2">ERROR</p>');
+					});
+				}
+				else {
+					$("#result").html('<span class="text-danger">Error</span>');
+				}
+			}
+			return isAllValid; /* returns true if all fields are filled */
+		} /* end of validateFields() */
+
+		generateVerificationCode();  /* call this method to generate a new verification code on page load */
+
+	</script>
+</body>
+
+</html>
